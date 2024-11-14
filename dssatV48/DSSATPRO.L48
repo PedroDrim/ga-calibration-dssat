@@ -1,0 +1,171 @@
+*** *  DSSAT PROFILE LINUX* ***
+DDB // /app/dssat
+DTB // /app/dssat
+DTE // /app/dssat
+DTO // /app/dssat
+DAT // /app/dssat
+DPT // /app/dssat
+DIM // /app/dssat
+DTP // /app/dssat
+DPF // /app/dssat
+DFO // /app/dssat
+DIS // /app/dssat
+DDW // /app/dssat
+DWG // /app/dssat
+DWC // /app/dssat
+DDS // /app/dssat
+DTS // /app/dssat
+DDG // /app/dssat
+DCG // /app/dssat/TOOLS/GENCALC GENCALC2.EXE
+DGL // /app/dssat/TOOLS/GLUE GLUE.BAT
+DPM // /app/dssat
+DDE // /app/dssat
+TOG // /app/dssat/TOOLS/GBUILD GBUILD.EXE
+
+MAL // /app/dssat dscsm048 PRFRM048
+MBA // /app/dssat dscsm048 CSCER048
+MBH // /app/dssat dscsm048 CRGRO048
+MBM // /app/dssat dscsm048 PRFRM048
+MBN // /app/dssat dscsm048 CRGRO048
+MBR // /app/dssat dscsm048 PRFRM048
+MBS // /app/dssat dscsm048 BSCER048
+MCB // /app/dssat dscsm048 CRGRO048
+MCH // /app/dssat dscsm048 CRGRO048
+MCN // /app/dssat dscsm048 CRGRO048
+MCO // /app/dssat dscsm048 CRGRO048
+MCP // /app/dssat dscsm048 CRGRO048
+MCS // /app/dssat dscsm048 CSYCA048
+MFA // /app/dssat dscsm048 CRGRO048
+MFB // /app/dssat dscsm048 CRGRO048
+MGB // /app/dssat dscsm048 CRGRO048
+MGG // /app/dssat dscsm048 PRFRM048
+MLT // /app/dssat dscsm048 CRGRO048
+MML // /app/dssat dscsm048 MLCER048
+MMZ // /app/dssat dscsm048 MZCER048
+MNP // /app/dssat dscsm048 CRGRO048
+MPI // /app/dssat dscsm048 PIALO048
+MPN // /app/dssat dscsm048 CRGRO048
+MPP // /app/dssat dscsm048 CRGRO048
+MPR // /app/dssat dscsm048 CRGRO048
+MPT // /app/dssat dscsm048 PTSUB048
+MRI // /app/dssat dscsm048 RICER048
+MSB // /app/dssat dscsm048 CRGRO048
+MSC // /app/dssat dscsm048 SCCAN048
+MSF // /app/dssat dscsm048 CRGRO048
+MSG // /app/dssat dscsm048 SGCER048
+MSI // /app/dssat
+MSU // /app/dssat dscsm048 CRGRO048
+MSW // /app/dssat dscsm048 SWCER048
+MTF // /app/dssat dscsm048 TFAPS048
+MTM // /app/dssat dscsm048 CRGRO048
+MTN // /app/dssat dscsm048 TNARO048
+MTR // /app/dssat dscsm048 TRARO048
+MVB // /app/dssat dscsm048 CRGRO048
+MWH // /app/dssat dscsm048 CSCER048
+MOT // /app/dssat
+MU1 // /app/dssat
+MU2 // /app/dssat
+MIO // /app/dssat
+MLO // /app/dssat
+
+MGR // /app/dssat
+NSH // /app/dssat
+ASP // /app/dssat
+ASS // /app/dssat dscsm048
+ASA // /app/dssat VARAN2.EXE
+AGR // /app/dssat
+AQS // /app/dssat dscsm048
+AQA // /app/dssat SUSTAIN2.EXE
+ASX // /app/dssat
+APS // /app/dssat dscsm048
+APV // /app/dssat
+APM // /app/dssat
+APA // /app/dssat VARAN2.EXE
+APJ // /app/dssat
+APF // /app/dssat
+APP // /app/dssat
+APK // /app/dssat DISC9801.EXE
+TOE // /WINDOWS NOTEPAD.EXE
+TOS // /
+TOM // /
+STD // /app/dssat/StandardData
+WED // /app/dssat/Weather
+WGD // /app/dssat/Weather/Gen
+CLD // /app/dssat/Weather/Climate
+WMD // /app/dssat/Weather/Month
+SLD // /app/dssat/Soil
+CRD // /app/dssat/Genotype
+FID // /app/dssat/Background
+ALD // /app/dssat/Alfalfa
+GCD // /app/dssat/GCWork
+GUD // /app/dssat/GLWork
+BAD // /app/dssat/Barley
+BHD // /app/dssat/Bahia
+BMD // /app/dssat/Bermudagrass
+BND // /app/dssat/Drybean
+BRD // /app/dssat/Brachiaria
+BSD // /app/dssat/Sugarbeet
+CBD // /app/dssat/Cabbage
+CHD // /app/dssat/Chickpea
+CND // /app/dssat/Canola
+COD // /app/dssat/Cotton
+CPD // /app/dssat/Cowpea
+CSD // /app/dssat/Cassava
+FAD // /app/dssat/Fallow
+FBD // /app/dssat/Fababean
+GBD // /app/dssat/GreenBean
+GGD // /app/dssat/Guineagrass
+LTD // /app/dssat/Lentil
+MLD // /app/dssat/PearlMillet
+MZD // /app/dssat/Maize
+NPD // /app/dssat/Napier
+PED // /app/dssat/Pea
+PID // /app/dssat/Pineapple
+PND // /app/dssat/Peanut
+POD // /app/dssat/PerennialPeanut
+PPD // /app/dssat/Pigeonpea
+PRD // /app/dssat/BellPepper
+PTD // /app/dssat/Potato
+RID // /app/dssat/Rice
+SBD // /app/dssat/Soybean
+SCD // /app/dssat/Sugarcane
+SFD // /app/dssat/Safflower
+SGD // /app/dssat/Sorghum
+SID // /app/dssat
+SUD // /app/dssat/Sunflower
+SWD // /app/dssat/SweetCorn
+TFD // /app/dssat/Teff
+TMD // /app/dssat/Tomato
+TND // /app/dssat/Tanier
+TRD // /app/dssat/Taro
+VBD // /app/dssat/Velvetbean
+WHD // /app/dssat/Wheat
+U1D // /app/dssat/CROP1
+U2D // /app/dssat/CROP2
+OTD // /
+ASD // /app/dssat/Seasonal
+AQD // /app/dssat/Sequence
+APD // /app/dssat/Spatial
+PSD // /app/dssat/Pest
+ECD // /app/dssat/Economic
+TOD // /
+
+MQU // /app/dssat dscsm048 CRGRO048
+QUD // /app/dssat/Quinoa
+ACC // /app/dssat dscsm048
+CCD // /app/dssat/ClimateChange
+AYF // /app/dssat dscsm048
+YFD // /app/dssat/YieldForecast
+SRD // /app/dssat/Strawberry
+MSR // /app/dssat dscsm048 CRGRO048
+CID // /app/dssat/Chia
+MCI // /app/dssat dscsm048 CRGRO048
+MPE // /app/dssat dscsm048 CRGRO048
+MPO // /app/dssat dscsm048 PRFRM048
+MSS // /app/dssat dscsm048 CRGRO048
+SSD // /app/dssat/Sesame
+
+MBC // /app/dssat dscsm048 CRGRO048
+BCD // /app/dssat/Carinata
+MGY // /app/dssat dscsm048 CRGRO048
+GYD // /app/dssat/Guar

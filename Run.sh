@@ -1,0 +1,1 @@
+Rscript 1_start_simulation.R
