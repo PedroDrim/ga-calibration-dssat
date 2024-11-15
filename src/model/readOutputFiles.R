@@ -1,11 +1,13 @@
 #===============================================#
-# Funcao responsavel por ler o identificador de tratamento no arquivo X
+# Funcao responsavel por ler o identificador de tratamento no arquivo .X
+# @param (character) x_file => Nome do arquivo .x
+# @returns (number[]) Identificadores dos tratamentos
 readTreatmentsId = function(x_file) {
-    # Criando conexao com o arquivo X
+    # Criando conexao com o arquivo .X
     con = file(x_file, "r")
     xLines = readLines(con)
 
-    # Encerrando conexao com o arquivo X
+    # Encerrando conexao com o arquivo .X
     close(con)
 
     # Obtendo linha dos grupos
@@ -29,13 +31,15 @@ readTreatmentsId = function(x_file) {
 #===============================================#
 
 #===============================================#
-# Funcao responsavel por ler a regiao do arquivo X
+# Funcao responsavel por ler a regiao do arquivo .X
+# @param (character) x_file => Nome do arquivo .x
+# @returns (character) Regiao do arquivo
 readRegion = function(x_file) {
-    # Criando conexao com o arquivo X
+    # Criando conexao com o arquivo .X
     con = file(x_file, "r")
     xLines = readLines(con)
 
-    # Encerrando conexao com o arquivo X
+    # Encerrando conexao com o arquivo .X
     close(con)
 
     # Obtendo linha dos grupos
@@ -48,6 +52,9 @@ readRegion = function(x_file) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por ler os dados do arquivo .T
+# @param (character) t_file => Nome do arquivo .T
+# @returns (data.table) Dados contidos no arquivo .T
 readTfile = function(t_file) {
     # Criando conexao com o arquivo .T
     con = file(t_file, "r")
@@ -71,6 +78,9 @@ readTfile = function(t_file) {
 
 #===============================================#
 # Funcao responsavel por ler os resultados do arquivo Evaluate.OUT
+# @param (character) simulationDirectory => Diretorio da simulacao
+# @param (character) region => Regiao do arquivo .X
+# @returns (data.table) Dados contidos no arquivo Evaluate.OUT
 readEvaluate = function(simulationDirectory, region) {
     # Localizando arquivo
     evaluationFile = paste0(simulationDirectory, "//", 'Evaluate.OUT')
@@ -93,6 +103,9 @@ readEvaluate = function(simulationDirectory, region) {
 
 #===============================================#
 # Funcao responsavel por ler os resultados do arquivo PlantGro.OUT
+# @param (character) simulationDirectory => Diretorio da simulacao
+# @param (character[]) treatmentId => Identificadores dos tratamentos
+# @returns (data.table) Dados contidos no arquivo PlantGro.OUT
 readPlantgrout = function(simulationDirectory, treatmentId) {
     # Localizando arquivo
     plantgroFIle = paste0(simulationDirectory, "//", 'PlantGro.OUT')

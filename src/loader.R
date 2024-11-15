@@ -3,7 +3,6 @@
 load.packages = function() {
   require(ggplot2)
   require(reshape2)
-  require(gridExtra)
 
   require(doParallel)
   require(data.table)
@@ -33,6 +32,8 @@ load.functions = function() {
 
 #===============================================#
 # Funcao responsavel pela leitura do arquivo de configuracao
+# @param (string) arq.config => Arquivo de configuracao
+# @returns (list) Lista de parametros do arquivo de configuracao
 config.treatment = function(arq.config) {
   
   con = file(arq.config)

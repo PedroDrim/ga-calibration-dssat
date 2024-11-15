@@ -1,4 +1,9 @@
 #===============================================#
+# Funcao responsavel por criar a populacao inicial
+# @param (number) popSize => Tamanho da populacao
+# @param (character[]) coefficients => Variaveis de coeficientes selecionados para a analise
+# @param (number[2]) rangeValue => Intervalo de valores minimo e maximo da populacao inicial
+# @returns (matrix) Populacao inicial
 createInitialPopulation = function(popSize, coefficients, rangeValue = c(0.2, 1.8)) {
     # Gerando vetor inicial
     initialVector = seq(rangeValue[1], rangeValue[2], length.out = popSize)
@@ -14,6 +19,10 @@ createInitialPopulation = function(popSize, coefficients, rangeValue = c(0.2, 1.
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por gerar uma nova populacao com base em cruzamentos
+# @param (matrix) survivors => Sobreviventes da rodada anterior
+# @param (number) popSize => Tamanho da populacao
+# @returns (matrix) Nova populacao
 generateNextPopulation = function(survivors, popSize) {
     # Gerando indices da proxima populacao
     survivorsSize = nrow(survivors)
@@ -56,6 +65,11 @@ generateNextPopulation = function(survivors, popSize) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por aplicar mutacao em uma populacao
+# @param (matrix) population => Populacao a sofrer mutacao
+# @param (number) mutationRate => % da populacao a sofrer mutacao
+# @param (number[2]) rangeVariation => Intervalo de valores minimo e maximo da mutacao
+# @returns (matrix) Populacao com mutacao aplicada
 mutatePopulation = function(population, mutationRate = 0.1, rangeVariation = c(0.2, 1.8)) {
     # Obtendo indice de mutacao
     populationSize = nrow(population)
@@ -74,6 +88,10 @@ mutatePopulation = function(population, mutationRate = 0.1, rangeVariation = c(0
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por aplicar a classificacao de individuos
+# @param (data.table) SSE => Dados da diferenca entre o observado e o simulado pelo individuo
+# @param (matrix) correlationMatrix => Matrix de correlacao para cada tratamento 
+# @returns (number) Valor de classificacao do individuo
 fitness = function(SSE, correlationMatrix) {
     # Calculando media por calibracao
     correlationMean = sapply(correlationMatrix, function(page) {
@@ -113,6 +131,11 @@ fitness = function(SSE, correlationMatrix) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por filtrar os 20% melhores individuos da rodada
+# @param (data.table) iterationData => Individuos da rodada com seus resultados
+# @param (character[]) cromossome => Nome das colunas necessarias para uma nova rodada 
+# @param (number) bestValue => Melhor valor ate o momento
+# @returns (list) Lista contendo os top20, melhor valor e media dos resultados dos top20
 filterPopulation = function(iterationData, cromossome, bestValue) {
     # Obtendo nomes das colunas necessarias
     iterarionData.index = c("y", cromossome)
@@ -147,6 +170,16 @@ filterPopulation = function(iterationData, cromossome, bestValue) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por executar o algoritmo genetico
+# @param (list) inputList => Lista de parametros de execussao
+# @param (list) correlationMatrix => Lista contendo a matrix de correlacao para cada tratamento
+# @param (function) validationFunction => Funcao de validacao do modelo
+# @param (number) maxIterarion => Quantidade maxima de interacoes
+# @param (number) maxPopulation => Quantidade maxima de populacoes
+# @param (number) mutationRate => % de mutacao de individuos
+# @param (number) minVariation => Variacao minima dos individuos
+# @param (number) maxVariation => Variacao maxima dos individuos
+# @returns (list) Lista contendo os top20, melhor valor e media dos resultados dos top20
 runGeneration = function(inputList, correlationMatrix, validationFunction, maxIteration = 10, maxPopulation = 10, mutationRate = 0.1, minVariation = 0.2, maxVariation = 1.8) {
     # OBtendo diretorio de saida
     outputDir = inputList$outputDir

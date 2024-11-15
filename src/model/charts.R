@@ -1,4 +1,9 @@
 #===============================================#
+# Funcao responsavel por gerar o grafico de correlacao para o aquecimento
+# @param (number) treatment => Identificador do tratamento
+# @param (data.table) warmup => Resultado da rodada de aquecimento
+# @param (list) correlationMatrix => Lista contendo a matrix de correlacao para cada tratamento 
+# @param (character) outputDir => Diretorio de saida do grafico
 plotWarmupCorrelation = function(treatment, warmup, correlationMatrix, outputDir) {
     # Filtrando tratamento
     warmup.subset = warmup[TN == treatment]
@@ -65,6 +70,10 @@ plotWarmupCorrelation = function(treatment, warmup, correlationMatrix, outputDir
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por gerar o grafico de historico do algoritmo genetico
+# @param (data.table) warmup => Resultado do algoritmo genetico
+# @param (character[]) coefficient => Variaveis de coeficiente selecionados para a analise
+# @param (character) outputDir => Diretorio de saida do grafico
 plotGaHistory = function(gaData, coefficient, outputDir) {
     coefficient.index = c("y", "generationId", coefficient)
     gaDataResult = unique(gaData[, ..coefficient.index])

@@ -1,4 +1,10 @@
 #===============================================#
+# Funcao responsavel por criar uma matrix de correlacao
+# @param (number) treatment => Identificador do tratamento desejado
+# @param (data.table) warmup => Tabela de resultados de aquecimento
+# @param (character[]) coefficient => Variaveis de coeficientes selecionados para a analise
+# @param (character[]) calibration => Variaveis de calibracao selecionados para a analise
+# @returns (matrix) Matrix de correlacoes entre "coefficient x calibration"
 createCorrelationMatrix = function(treatment, warmup, coefficient, calibration) {
     # Extraindo subset do dado
     data.subset = warmup[TN == treatment]
@@ -39,6 +45,10 @@ createCorrelationMatrix = function(treatment, warmup, coefficient, calibration) 
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por calcular a diferenca SSE entre observado e simulado do arquivo "Evaluate.OUT"
+# @param (data.table) evaluateData => Tabela de valores de Evaluate
+# @param (character[]) calibration => Variaveis de calibracao selecionados para a analise
+# @returns (data.table) Diferenca em % da diferenca com o observado
 evaluateDifference = function(evaluateData, calibration) {
   # Obtendo variaveis simuladas de calibracao
   variableSimulated = paste0(sprintf("%sS", calibration), collapse = "|")
@@ -68,6 +78,11 @@ evaluateDifference = function(evaluateData, calibration) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por calcular a diferenca SSE entre observado e simulado do arquivo "Plantgro.OUT"
+# @param (data.table) plantgroData => Tabela de valores de Plantgro
+# @param (data.table) tData => Tabela de valores do arquivo .T
+# @param (character[]) calibration => Variaveis de calibracao selecionados para a analise
+# @returns (data.table) Diferenca em % da diferenca com o observado
 plantgroDifference = function(plantgroData, tData, calibration) {
   # Gerando regex das variaveis de calibracao
   variableRegex = paste0(c("TRNO", calibration), collapse = "|")
@@ -115,8 +130,11 @@ plantgroDifference = function(plantgroData, tData, calibration) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por calcular RMSE
+# @param (number[]) SSERow => Diferenca entre o observado e o simulado
+# @returns (number) RMSE calculado 
 rmse = function(SSERow) {
-  RMSE = sqrt(mean(SSERow^2, na.rm = T))
+  RMSE = mean(SSERow^2, na.rm = T) |> sqrt()
   return(RMSE)
 }
 #===============================================#

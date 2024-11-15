@@ -1,4 +1,9 @@
 #===============================================#
+# Funcao responsavel por executar a simulacao
+# @param (matrix) multiplyMatrix => Matrix com as multiplicacoes realizadas na simulacao
+# @param (character) templateId => Identificador para os diretorios de rodada
+# @param (list) inputList => Lista de parametros de execussao
+# @retuns (list) Lista contendo os resultados da rodada
 simulationFunction = function(multiplyMatrix, templateId, inputList) {
   # Iniciando timer
   cat(sprintf("==> [%s] iniciando rodadas.\n", templateId))
@@ -58,6 +63,9 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
 #===============================================#
 
 #===============================================#
+# Funcao responsavel por executar o algoritmo genetico da simulacao
+# @param (list) input => Lista de parametros de execussao
+# @param (list) correlationMatrix => Lista contendo a matrix de correlacao para cada tratamento
 runSimulationGA = function(input, correlationMatrix) {
   # Tratando parametros de entrada
   maxIteration = as.numeric(input$maxiter)
