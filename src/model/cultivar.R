@@ -1,7 +1,5 @@
 #===============================================#
 # Funcao responsavel por escrever um novo arquivo cultivar
-# @param (data.table) cultivarData => Dados do cultivar a ser escrito
-# @param (character) simulationDirectory => Diretorio de simulacao
 writeCultivar = function(cultivarData, simulationDirectory) {
   # Obtendo valores e ajustando eles para apenas 5 digitos (inclusive o separador decimal)
   headerSize = dim(cultivarData)[2]
@@ -24,19 +22,18 @@ writeCultivar = function(cultivarData, simulationDirectory) {
   cultivarConcat = function(values) {
     spaces = rep("%5s", length(values))
     spaces[1:4] = c("%-6s", "%-16s", "%5s", "%6s")
-    resp = sprintf(spaces, values) |> paste0(collapse = " ")
+    resp = sprintf(spaces, values)
+    resp = paste0(resp, collapse = " ")
 
     # Retornando linha
     return(resp)
   }
 
   # Montando cabecalho
-  header = names(cultivarData)
-  header = cultivarConcat(header)
+  header = names(cultivarData) |> cultivarConcat()
 
   # Montando linha
-  line = cultivarData[1,]
-  line = cultivarConcat(line)
+  line = cultivarData[1,] |> cultivarConcat()
 
   # Escrevendo valores no arquivo de saida
   cat(sprintf("%s\n", header), file = outputFile, append = FALSE, sep = "")
@@ -46,10 +43,6 @@ writeCultivar = function(cultivarData, simulationDirectory) {
 
 #===============================================#
 # Funcao responsavel por atualizar o cultivar com novos valores
-# @param (character) cultivarFile => Arquivo do cultivar
-# @param (number[]) multiplyVector => Vetor de multiplicacao referente ao individuo
-# @param (character) cultivar => Identificador do cultivar
-# @returns (data.table) Conjunto de valores referente ao cultivar
 makeCultivar = function(cultivarFile, multiplyVector, cultivar) {
   # Criando conexao com o arquivo cultivar
   con = file(cultivarFile, "r")

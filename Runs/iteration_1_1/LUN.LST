@@ -1,0 +1,9 @@
+*DSSAT Cropping System Model Ver. 4.7.5.007          -    NOV 29, 2024; 18:52:34
+
+ Unit  Filename
+   21  FILEIO
+   14  BATCH 
+  501  ERRORO
+   15  ERRORX
+  502  WARNING.OUT
+  503  OUTWARN

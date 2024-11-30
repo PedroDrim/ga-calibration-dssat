@@ -1,9 +1,5 @@
 #===============================================#
 # Funcao responsavel por replicar o ambiente de execussao do dssat no diretorio do experimento
-# @param (character) dssatFile => Arquivo binario de execussao do dssat
-# @param (character) experimentDirectory => Diretorio contendo o experimento original (baseline) 
-# @param (character) simulationDirectory => Diretorio em que a simulacao ira acontecer 
-# @returns (character[]) Arquivos necessarios para a execussao da simulacao
 filesDssat = function(dssatFile, experimentDirectory, simulationDirectory) {
   # Montando regex de busca
   baseFiles = '.ECO$|.SPE$|.WTH$|.X$|.SOL$|.CUL$|.T$|.A$|.ERR$|.CDE$|.L47$'
@@ -22,16 +18,12 @@ filesDssat = function(dssatFile, experimentDirectory, simulationDirectory) {
 
 #===============================================#
 # Funcao responsavel por criar os diretorios referentes a execucao das rodadas
-# @param (matrix) multiplyMatrix => Matrix contendo as multiplicacoes necessarias durante a rodada
-# @param (character) templateId => Identificador do diretorio de simulacao 
-# @param (list) inputList => Lista de parametros de execussao
-# @returns (list) Lista contendo os diretorios prontos para teste dos individuos da rodada
 createSimulationDirectories = function(multiplyMatrix, templateId, inputList) {
   # Obtendo diretorio de execucao
-  dirRun = inputList$dirRun
+  dirRun = ".//Runs"
 
   # Limpando diretorio de execucao
-  unlink(sprintf("%s//.", dirRun), recursive = T)
+  unlink(dirRun, recursive = T)
 
   # Indices da matrix de multiplicacao
   matrix.index = 1:nrow(multiplyMatrix)
@@ -40,7 +32,7 @@ createSimulationDirectories = function(multiplyMatrix, templateId, inputList) {
   simulationDirectories = sprintf("%s//%s_%s", dirRun, templateId, matrix.index)
 
   # Criando diretorio da rodada
-  status = sapply(simulationDirectories, dir.create, showWarnings = F, mode = "777")
+  status = sapply(simulationDirectories, dir.create, showWarnings = F, mode = "777", recursive = T)
 
   # Obtendo parametros do cultivar
   cultivarFile = inputList$cultivarFile
@@ -77,11 +69,7 @@ createSimulationDirectories = function(multiplyMatrix, templateId, inputList) {
 #===============================================#
 
 #===============================================#
-# Funcao responsavel por executar o dssat via comando
-# @param (character) simulationDirectory => Diretorio em que a simulacao ira acontecer 
-# @param (character) dssatFile => Arquivo binario de execussao do dssat
-# @param (character) model => Modelo da simulacao dssat 
-# @returns (boolean) Validacao da saida do modelo
+# Funcao responsavel por executar o dssat
 executeDssat = function(simulationDirectory, dssatFile, model) {
   # Definindo ponto de retorno
   homeDirectory = getwd()
@@ -110,10 +98,6 @@ executeDssat = function(simulationDirectory, dssatFile, model) {
 
 #===============================================#
 # Funcao responsavel por criar o arquivo Batch do dssat
-# @param (character) crop => Tipo do cultivar a ser simulado
-# @param (character) x_file => Nome do arquivo .X
-# @param (character) filename => Nome do arquivo de saida gerado 
-# @param (character[]) treatmentId => Identificadores dos tratamentos
 CSMbatch = function(crop, x_file, filename, treatmentId) {
 
   # Identificador da rodada
@@ -140,12 +124,8 @@ CSMbatch = function(crop, x_file, filename, treatmentId) {
 #===============================================#
 
 #===============================================#
-# Funcao responsavel por executar o dssat para uso interno
-# @param (character[]) simulationFiles => Arquivos necessarios para a simulacao do dssat
-# @param (character) model => Modelo da simulacap
-# @param (character) dssatFile => Nome do arquivo de execussao do dssat 
-# @param (character[]) calibration => Variaveis de calibracao selecionados para a analise
-# @returns (data.table) Resultado da execussao e analise do modelo dssat
+# HWAMS ADAPS MDAPS  CWAMS  to make sensitivity analysis
+## agregar var_calibri_t
 runDssat = function(simulationFiles, model, dssatFile, calibration) {
   # Diretorio da simulacao
   simulationDir = dirname(simulationFiles[1])

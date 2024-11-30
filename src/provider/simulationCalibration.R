@@ -1,13 +1,8 @@
 #===============================================#
-# Funcao responsavel por executar a simulacao
-# @param (matrix) multiplyMatrix => Matrix com as multiplicacoes realizadas na simulacao
-# @param (character) templateId => Identificador para os diretorios de rodada
-# @param (list) inputList => Lista de parametros de execussao
-# @retuns (list) Lista contendo os resultados da rodada
 simulationFunction = function(multiplyMatrix, templateId, inputList) {
   # Iniciando timer
   cat(sprintf("==> [%s] iniciando rodadas.\n", templateId))
-  startTime = Sys.time()
+  startTime = Sys.time() |> as.numeric()
   
   # Arredondando valores devido a precisao do dssat
   multiplyMatrix = round(multiplyMatrix, digits = 2)
@@ -57,15 +52,13 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
 
   
   # Encerrando timer
-  cat(sprintf("==> [%s] %s rodadas concluidas em %s.\n", templateId, runSize, round(Sys.time() - startTime, 3)))  
+  endTime = Sys.time() |> as.numeric()
+  cat(sprintf("==> [%s] %s rodadas concluidas em '%s' segundos.\n", templateId, runSize, round(endTime - startTime, 3)))  
   return(SSE.list)
 }
 #===============================================#
 
 #===============================================#
-# Funcao responsavel por executar o algoritmo genetico da simulacao
-# @param (list) input => Lista de parametros de execussao
-# @param (list) correlationMatrix => Lista contendo a matrix de correlacao para cada tratamento
 runSimulationGA = function(input, correlationMatrix) {
   # Tratando parametros de entrada
   maxIteration = as.numeric(input$maxiter)

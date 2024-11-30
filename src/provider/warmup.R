@@ -1,7 +1,4 @@
 #===============================================#
-# Funcao responsavel por executar o aquecimento da simulacao
-# @param (list) input => Lista de parametros de execussao
-# @returns (list) Lista contendo a matrix de correlacao para cada tratamento 
 runSimulationWarmup = function(input) {
   # Obtendo coeficientes
   coefficients = input$coefficients
