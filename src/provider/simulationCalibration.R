@@ -39,7 +39,7 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
   runSize = length(run.list)
 
   # Obtendo resposta SSE
-  SSE.list = lapply(1:runSize, function(index, run.list, calibration, filtrar) {
+  SSE.list = lapply(1:runSize, function(index, run.list, calibration) {
     # Separando rodada
     SSE = run.list[[index]]
 
@@ -48,9 +48,8 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
 
     # Retornando SSE
     return(SSE)
-  }, run.list, calibration, filtrar)
+  }, run.list, calibration)
 
-  
   # Encerrando timer
   endTime = Sys.time() |> as.numeric()
   cat(sprintf("==> [%s] %s rodadas concluidas em '%s' segundos.\n", templateId, runSize, round(endTime - startTime, 3)))  

@@ -19,9 +19,7 @@ readTreatmentsId = function(x_file) {
     xLines = xLines[rangeValue[1]:rangeValue[2]]
 
     # Extraindo identificador de tratamentos
-    treatmentId = strsplit(xLines, " ")
-    treatmentId = sapply(treatmentId, function(x) x[2])
-    treatmentId = as.numeric(treatmentId)
+    treatmentId = strsplit(xLines, " ") |> sapply(function(x) x[2]) |> as.numeric()
     
     # Retornando resultado
     return(treatmentId)
@@ -57,11 +55,16 @@ readTfile = function(t_file) {
     close(con)
 
     # Removendo caracteres especiais de tabulacao
-    bntLines = gsub("\t", "", bntLines)
+    bntLines = gsub("\t", "  ", bntLines)
     
+    # Gerando cabecalho
+    bntHeader = gsub("@", "", bntLines[1]) |> strsplit(" ")
+    bntHeader = bntHeader[[1]]
+    bntHeader = bntHeader[bntHeader != ""]
+
     # Gerando data.table
     bntData = fread(text = bntLines[-1])
-    names(bntData) = gsub("@", "", names(bntData))
+    names(bntData) = bntHeader
     bntData$DOY = yday(bntData$DATE)
 
     # Retornando dados

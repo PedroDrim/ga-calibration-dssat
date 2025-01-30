@@ -41,12 +41,10 @@ createCorrelationMatrix = function(treatment, warmup, coefficient, calibration) 
 #===============================================#
 evaluateDifference = function(evaluateData, calibration) {
   # Obtendo variaveis simuladas de calibracao
-  variableSimulated = paste0(sprintf("%sS", calibration), collapse = "|")
-  variableSimulated.index = grep(variableSimulated, names(evaluateData))
+  variableSimulated.index = paste0(sprintf("%sS", calibration), collapse = "|") |> grep(names(evaluateData))
 
   # Obtendo variaveis observadas de calibracao
-  variableObserved = paste0(sprintf("%sM", calibration), collapse = "|")
-  variableObserved.index = grep(variableObserved, names(evaluateData))
+  variableObserved.index = paste0(sprintf("%sM", calibration), collapse = "|") |> grep(names(evaluateData))
 
   # Obtendo variaveis simuladas
   calibrationDataSimulated = evaluateData[, ..variableSimulated.index]
@@ -57,7 +55,7 @@ evaluateDifference = function(evaluateData, calibration) {
   calibrationDataObserved[calibrationDataObserved == -99] = NA
 
   # Calculando a diferenca entre Observado e Simulado
-  response = (calibrationDataObserved - calibrationDataSimulated) / abs(calibrationDataObserved)
+  response = rpe(calibrationDataObserved, calibrationDataSimulated)
 
   # Adicionando tratamento
   response$TN = evaluateData$TN
@@ -93,15 +91,15 @@ plantgroDifference = function(plantgroData, tData, calibration) {
   calibrationData = calibrationData[order(TRNO)]
 
   # Atualizando variaveis simuladas de calibracao
-  variableSimulated = paste0(sprintf("%s.y", calibration), collapse = "|")
-  variableSimulated.index = grep(variableSimulated, names(calibrationData))
+  variableSimulated.index = paste0(sprintf("%s.y", calibration), collapse = "|") |> grep(names(calibrationData))
 
   # Atuallizando variaveis observadas de calibracao
-  variableObserved = paste0(sprintf("%s.x", calibration), collapse = "|")
-  variableObserved.index = grep(variableObserved, names(calibrationData))
+  variableObserved.index = paste0(sprintf("%s.x", calibration), collapse = "|") |> grep(names(calibrationData))
 
   # Calculando a diferenca entre Observado e Simulado
-  response = (calibrationData[, ..variableObserved.index] - calibrationData[, ..variableSimulated.index]) / abs(calibrationData[, ..variableObserved.index])
+  observed = calibrationData[, ..variableObserved.index]
+  simulated = calibrationData[, ..variableSimulated.index]
+  response = rpe(observed, simulated)
 
   # Atualizando nomes
   names(response) = gsub(".x|.y", "", names(response))
@@ -115,8 +113,17 @@ plantgroDifference = function(plantgroData, tData, calibration) {
 #===============================================#
 
 #===============================================#
+# Erro quadrado medio relativo (Para fazer a calibracao do modelo)
 rmse = function(SSERow) {
   RMSE = sqrt(mean(SSERow^2, na.rm = T))
   return(RMSE)
+}
+#===============================================#
+
+#===============================================#
+# Erro percentual relativo (Para normalizar a escala de valores)
+rpe = function(measured, simulated) {
+  RPE = (measured - simulated) / abs(measured)
+  return(RPE)
 }
 #===============================================#

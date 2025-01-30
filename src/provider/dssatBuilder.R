@@ -124,9 +124,9 @@ CSMbatch = function(crop, x_file, filename, treatmentId) {
 #===============================================#
 
 #===============================================#
-# HWAMS ADAPS MDAPS  CWAMS  to make sensitivity analysis
-## agregar var_calibri_t
+# Executa o dssat
 runDssat = function(simulationFiles, model, dssatFile, calibration) {
+
   # Diretorio da simulacao
   simulationDir = dirname(simulationFiles[1])
 
@@ -164,7 +164,7 @@ runDssat = function(simulationFiles, model, dssatFile, calibration) {
 
   # Carregando Evaluate.OUT
   runEvaluate = readEvaluate(simulationDir, region) |> evaluateDifference(calibration)
-
+  
   # Carregando Plantgro.OUT
   runPlantgrout = readPlantgrout(simulationDir, treatmentId) |> plantgroDifference(tData, calibration)
     

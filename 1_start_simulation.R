@@ -11,7 +11,7 @@ compile.functions()
 load.functions()
 
 # Lendo arquivo de configuracao
-input = config.treatment(".//StartValues_rice.config")
+input = config.treatment(".//StartValues_bean.config")
 
 #===================================#
 # Executar a verificacao de parametros da simulacao

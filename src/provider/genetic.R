@@ -84,24 +84,33 @@ fitness = function(SSE, correlationMatrix) {
     # Convertendo para data.table
     correlationMean = as.data.table(t(correlationMean))
 
-    # Ordenando os nomes
-    sortedNames = sort(names(correlationMean))
-    correlationMean = correlationMean[, ..sortedNames]
-
-    # Ordenando os nomes
-    calibrationNames = sapply(sortedNames, function(sortedName, SSE) {
-        response.index = grep(sortedName, names(SSE))
-        return(response.index)
-    }, SSE)
-
-    # Organizando colunas
-    SSE = SSE[, ..calibrationNames]
-
     # Multiplicando por -1 devido a diferenca entre "Observado - Simulado"
     correlationMean = correlationMean * (-1)
 
-    # Calculando rmse para tratamentos
-    rmseTreatment = apply(SSE * correlationMean, 2, rmse)
+    # Verificacao para ordenacao multivariavel de saida
+    if(dim(correlationMean)[1] > 1) {
+        # Ordenando os nomes
+        sortedNames = sort(names(correlationMean))
+        correlationMean = correlationMean[, ..sortedNames]
+
+        # Ordenando os nomes
+        calibrationNames = sapply(sortedNames, function(sortedName, SSE) {
+            response.index = grep(sortedName, names(SSE))
+            return(response.index)
+        }, SSE)
+
+        # Organizando colunas
+        SSE = SSE[, ..calibrationNames]
+
+        # Calculando rmse para tratamentos (saida multivariavel)
+        rmseTreatment = apply(SSE * correlationMean, 2, rmse)
+    } else {
+        # Calculando rmse para tratamentos (saida univariavel)
+        tn.index = -grep("TN", names(SSE))
+        SSE = SSE[, ..tn.index] |> unlist()
+        rmseTreatment = (SSE * correlationMean) |> sapply(rmse)
+    }
+
     rmseTreatment[is.nan(rmseTreatment)] = NA
 
     # Calculando y
@@ -131,6 +140,9 @@ filterPopulation = function(iterationData, cromossome, bestValue) {
     # Obtendo valor medio dos melhores (20%)
     mean.y = mean(iteraitonSummary$y) |> round(digits = 4)
 
+    # Obtendo desvio padrao dos melhores (20%)
+    sd.y = sd(iteraitonSummary$y) |> round(digits = 4)
+
     # Removendo y
     iteraitonSummary$y = NULL
 
@@ -141,7 +153,8 @@ filterPopulation = function(iterationData, cromossome, bestValue) {
     return(list(
         top20 = iteraitonSummary, 
         bestValue = bestValue, 
-        meanValue = mean.y
+        meanValue = mean.y,
+        sdValue = sd.y
     ))
 }
 #===============================================#
@@ -208,6 +221,10 @@ runGeneration = function(inputList, correlationMatrix, validationFunction, maxIt
 
         # Unindo resultado SSE
         sseData = do.call(rbind, sseData.list)
+        calibration = input$calibration
+
+        calibration.index = sapply(calibration, grep, names(sseData))
+        names(sseData)[calibration.index] = sprintf("%s_E", calibration)
 
         # Convertendo a populacao para data.table
         roundPopulation = as.data.table(roundPopulation)
@@ -229,7 +246,7 @@ runGeneration = function(inputList, correlationMatrix, validationFunction, maxIt
         population = population.list$top20
 
         # Mensagem de fim da rodada
-        cat(sprintf("[Generation %s/%s] Melhor valor: %s (y%%), Media: %s  (y%%)\n", iteration, maxIteration, population.list$bestValue, population.list$meanValue), sep = "")
+        cat(sprintf("[Generation %s/%s] Melhor valor: %s (y%%), Media: %s (y%%), D.Padrao: %s (y%%)\n", iteration, maxIteration, population.list$bestValue, population.list$meanValue, population.list$sdValue), sep = "")
     }
 
     # Gerando grafico de GA

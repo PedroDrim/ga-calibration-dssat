@@ -27,7 +27,7 @@ plotWarmupCorrelation = function(treatment, warmup, correlationMatrix, outputDir
         # Unindo a correlacao na legenda
         coef.m.index = which(rownames(correlation.subset) == coefficient)
         correlationData = correlation.subset[coef.m.index,]
-        correlationData = data.table(cor = correlationData, Calibration = names(correlationData))
+        correlationData = data.table(cor = correlationData, Calibration = colnames(correlation.subset))
         correlationData$label = sprintf("%s (%s)", correlationData$Calibration, correlationData$cor)
 
         # Renomeando colunas
@@ -41,15 +41,13 @@ plotWarmupCorrelation = function(treatment, warmup, correlationMatrix, outputDir
         chartData.long = melt(chartData, "coef", variable.name = "Calibration")
         chartData.long = chartData.long[complete.cases(chartData.long),]
         chartData.long$Calibration = as.character(chartData.long$Calibration)
-
-        # Obtendo eixo central
-        center.axis = chartData.long[coef == 1]
-        center.axis = merge(center.axis, correlationData, by = c("Calibration"))
+        chartData.long$value = (chartData.long$value * 100) |> round(digits = 2)
 
         # Gerando grafico
         p = ggplot(chartData.long, aes(x = coef, y = value, group = Calibration, color = Calibration)) +
             geom_smooth(formula = y ~ x, method = "loess") +
-            xlab(sprintf("%s multiplier", coefficient)) + ylab("(Obs - Sim) / |Obs|")
+            geom_hline(yintercept = 0) +
+            xlab(sprintf("%s multiplier", coefficient)) + ylab("RPE % | [+]Obs <=> [-]Sim")
         
         # Retornando grafico
         return(p)
