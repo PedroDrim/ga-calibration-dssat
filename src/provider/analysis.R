@@ -123,7 +123,7 @@ rmse = function(SSERow) {
 #===============================================#
 # Erro percentual relativo (Para normalizar a escala de valores)
 rpe = function(measured, simulated) {
-  RPE = (measured - simulated) / abs(measured)
+  RPE = (simulated - measured) / abs(measured)
   return(RPE)
 }
 #===============================================#

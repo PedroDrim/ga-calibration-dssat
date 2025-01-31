@@ -56,6 +56,25 @@ generateNextPopulation = function(survivors, popSize) {
 #===============================================#
 
 #===============================================#
+expandPopulation = function(survivors, popSize, rangeValue = c(0.2, 1.8)) {
+    # Gerando vetor inicial
+    initialVector = seq(rangeValue[1], rangeValue[2], length.out = popSize)
+
+    # Calculando populacao restante
+    remainSize = popSize - nrow(survivors)
+    cromosomeSize = ncol(survivors)
+
+    # Gerando nova populacao
+    newPopulation = matrix(sample(initialVector, remainSize * cromosomeSize, replace = TRUE), ncol = cromosomeSize)
+    colnames(newPopulation) = names(survivors)
+    nextPopulation = rbind(survivors, newPopulation)
+
+    # Retornando populacao
+    return(nextPopulation)
+}
+#===============================================#
+
+#===============================================#
 mutatePopulation = function(population, mutationRate = 0.1, rangeVariation = c(0.2, 1.8)) {
     # Obtendo indice de mutacao
     populationSize = nrow(population)
@@ -82,10 +101,8 @@ fitness = function(SSE, correlationMatrix) {
     })
 
     # Convertendo para data.table
+    # Se a correlacao for positiva (+) significa que o valor simulado e diretamente proporcional
     correlationMean = as.data.table(t(correlationMean))
-
-    # Multiplicando por -1 devido a diferenca entre "Observado - Simulado"
-    correlationMean = correlationMean * (-1)
 
     # Verificacao para ordenacao multivariavel de saida
     if(dim(correlationMean)[1] > 1) {
@@ -161,7 +178,7 @@ filterPopulation = function(iterationData, cromossome, bestValue) {
 
 #===============================================#
 runGeneration = function(inputList, correlationMatrix, validationFunction, maxIteration = 10, maxPopulation = 10, mutationRate = 0.1, minVariation = 0.2, maxVariation = 1.8) {
-    # OBtendo diretorio de saida
+    # Obtendo diretorio de saida
     outputDir = inputList$outputDir
 
     # Limpando arquivo de saida
@@ -180,14 +197,24 @@ runGeneration = function(inputList, correlationMatrix, validationFunction, maxIt
     # Obtendo semente de geracao
     seedValue = as.numeric(inputList$seed)
     if(seedValue != 0) {
-        cat(sprintf("[Configuration] Definindo semente de geracao para: '%s'\n", seedValue))
+        cat(sprintf("\t[Configuration] Definindo semente de geracao para: '%s'\n", seedValue))
     }
+
+    # Flag de verificacao de problema de ilha
+    islandFlag = FALSE
 
     # Iterando as geracoes
     for(iteration in 1:maxIteration) {
 
-        # Gerando populacao da geracao
-        roundPopulation = generateNextPopulation(population, maxPopulation)
+        if(islandFlag) {
+            # Expandindo populacao
+            cat(sprintf("\t[Warning] Populacao sem diversidade, corrigindo problema\n"))
+            roundPopulation = expandPopulation(population, maxPopulation, c(minVariation, maxVariation))
+        } else {
+            # Gerando populacao da geracao
+            roundPopulation = generateNextPopulation(population, maxPopulation)            
+        }
+
 
         # Aplicando semente de geracao da mutacao
         if(seedValue != 0) {
@@ -235,6 +262,7 @@ runGeneration = function(inputList, correlationMatrix, validationFunction, maxIt
 
         # Unindo com a populacao
         iterationData = merge(sseData, roundPopulation)
+        iterationData$IP = islandFlag
 
         # Exportando resposta da geracao
         fwrite(iterationData, gaRoundFile, append = file.exists(gaRoundFile))
@@ -244,14 +272,21 @@ runGeneration = function(inputList, correlationMatrix, validationFunction, maxIt
 
         # Reiniciando ciclo
         population = population.list$top20
+        bestValue = population.list$bestValue
+        meanValue = population.list$meanValue
+        sdValue = population.list$sdValue
+
+        # Verificando problema de ilha
+        islandFlag = (sdValue == 0)
 
         # Mensagem de fim da rodada
-        cat(sprintf("[Generation %s/%s] Melhor valor: %s (y%%), Media: %s (y%%), D.Padrao: %s (y%%)\n", iteration, maxIteration, population.list$bestValue, population.list$meanValue, population.list$sdValue), sep = "")
+        cat(sprintf("\t[Generation %s/%s] Melhor valor: %s (y%%), Media: %s (y%%), D.Padrao: %s (y%%)\n", iteration, maxIteration, bestValue, meanValue, sdValue), sep = "")
     }
 
     # Gerando grafico de GA
     gaRound = fread(gaRoundFile)
     plotGaHistory(gaRound, inputList$coefficients, outputDir)
+    plotEffectiveness(gaRound, inputList$coefficients, outputDir)
 
     # Salvando melhores individuos
     populationOutput = sprintf("%s//top20.csv", outputDir)

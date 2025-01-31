@@ -1,9 +1,12 @@
 #===============================================#
 simulationFunction = function(multiplyMatrix, templateId, inputList) {
   # Iniciando timer
-  cat(sprintf("==> [%s] iniciando rodadas.\n", templateId))
+  cat(sprintf("==> [%s] Iniciando rodadas ", templateId))
   startTime = Sys.time() |> as.numeric()
-  
+
+  # Avancando log textual (1)
+  cat(sprintf(".. "))
+
   # Arredondando valores devido a precisao do dssat
   multiplyMatrix = round(multiplyMatrix, digits = 2)
 
@@ -20,6 +23,9 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
   # Obtendo arquivo de execussao do dssat
   dssatFile = as.character(inputList$dssatFile)
 
+  # Avancando log textual (2)
+  cat(sprintf(".. "))
+
   if(noCores > 1) {
     # Habilitando clusters
     cl = makeForkCluster(noCores)
@@ -34,7 +40,10 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
     # Executando Dssat em serie
     run.list = lapply(simulation.list, runDssat, model, dssatFile, calibration)
   }
-    
+
+  # Avancando log textual (3)
+  cat(sprintf(".. "))
+
   # Tamanho da lista de respostas
   runSize = length(run.list)
 
@@ -52,7 +61,7 @@ simulationFunction = function(multiplyMatrix, templateId, inputList) {
 
   # Encerrando timer
   endTime = Sys.time() |> as.numeric()
-  cat(sprintf("==> [%s] %s rodadas concluidas em '%s' segundos.\n", templateId, runSize, round(endTime - startTime, 3)))  
+  cat(sprintf("%s rodadas concluidas em '%s' segundos.\n", runSize, round(endTime - startTime, 3)))  
   return(SSE.list)
 }
 #===============================================#
